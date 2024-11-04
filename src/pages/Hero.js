@@ -12,10 +12,20 @@ const Hero = () => {
             Quality islamic products,delivered to you!
             </h1>
             {/* Customer Count Section */}
-            <div className="flex items-center mb-4 space-x-2">
-              <div className="text-gray-600">10K+ Customers</div>
-              <div className="w-px h-5 bg-gray-400"></div>
-              <div className="text-gray-600">500+ Reviews</div>
+            <div className="flex items-center md:justify-between mb-4 ">
+              <div className='flex items-center gap-2'>
+              <div className="text-gray-600">
+                <p className='font-bold'>10K+</p> 
+                <p>Customers</p>
+                </div>
+              <div className="w-px h-5 m-4 bg-gray-400"></div>
+              <div className="text-gray-600">
+              <p className='font-bold'>500+</p> 
+              <p>Reviews</p>
+              </div>
+               </div>
+               <img src='images/Vector_186.png' className='hidden md:block md:w-[100px] mr-10 '></img>
+        
             </div>
             {/* Search Bar */}
             <div className="flex items-center bg-white border-transparent rounded-md ">
@@ -31,7 +41,7 @@ const Hero = () => {
               
             </div>
           </div>
-          {/* Right Section (Hidden on mobile) */}
+           {/* Right Section (Hidden on mobile) */}
           <div className="hidden md:block flex-1">
             <img
               src="images/heroImage.png"
