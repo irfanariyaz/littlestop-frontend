@@ -7,7 +7,7 @@ function ProductCard({index,product}) {
   <Link
     to={`/productDetail/${product.id}`}
     key={index}
-    className=" max-h-[400px] max-w-[250px]  bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 tr"
+    className=" max-h-[400px] max-w-[250px]  bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 "
   >
     <div className="w-[200px] h-[250px] bg-gray-100 rounded-lg  mb-4">
       <img
