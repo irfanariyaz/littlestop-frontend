@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 //import { left_arrow_icon, right_arrow_icon } from 'react-icons'; // Adjust the import path as necessary
-import ProductCard from './ProductCard';
+import ProductCard from './ProductCardForCategories';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import ProductCardForCatagoreies from './ProductCardForCategories';
 
 const Slider = () => {
     const items = [
@@ -72,7 +73,7 @@ const Slider = () => {
             onScroll={onSlide}
                   >
             {items.map((item, index) => (
-              <ProductCard key={index} product={item} />
+              <ProductCardForCatagoreies key={index} product={item} />
             ))}
                   </div>
                   <div
