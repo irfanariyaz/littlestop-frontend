@@ -32,7 +32,7 @@ const Navbar = () => {
         
         {/* Logo */}
         <NavLink to="/" className="text-2xl font-bold">
-          <img src="/images/littlestop.png" alt="Logo" className="h-20 w-auto" />
+          <img src="/images/logo.jpeg" alt="Logo" className="h-20 w-auto" />
         </NavLink>
 
         {/* Desktop Nav NavLinks */}

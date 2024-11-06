@@ -10,7 +10,7 @@ const Categoreies = () => {
   return (
     <div className='mt-10  bg-primary '>
       <div className='flex flex-col items-center mb-8 '>
-            <h1 className=' text-2xl font-bold'>Categories</h1>
+            <h1 className=' text-2xl font-bold mt-4'>Categories</h1>
             <p className='text-sm'>Find what you are looking for</p>
         </div>
 {/* <div className="md:w-[70%] md:m-auto flex  flex-col items-center mb-6  overflow-x-scroll no-scrollbar overflow-y-hidden "> */}
@@ -39,7 +39,7 @@ const Categoreies = () => {
           Discover our exclusive collection of items carefully crafted for you.
         </p>
         {/* Button */}
-        <button className=" bg-white text-black px-6 py-2 rounded-md shadow hover:bg-primary-dark transition duration-300">
+        <button className=" bg-white text-black px-6 py-2 rounded-md shadow hover:bg-primary-dark transition duration-300 mb-4">
           Explore More
         </button>
       </div>

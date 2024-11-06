@@ -3,6 +3,7 @@ import Hero from './Hero.js'
 import Slider from './slider.js'
 import About from './About.js'
 import Categoreies from './Categories.js'
+import Testimonials from './Testimonials.js'
 
 function Home() {
   return (
@@ -12,6 +13,7 @@ function Home() {
    <Slider />
    <About/>
    <Categoreies/>
+   <Testimonials/>
    </>
   )
 }

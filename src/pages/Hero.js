@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 
 const Hero = () => {
   return (
-    <section className=" ">
+    <section className="mt-4 ">
       <div class="md:container  p-10 md:p-0 bg-primary  md:w-[70%] md:m-auto flex flex-col md:flex-row items-center">
           {/* Left Section */}
           <div className="flex-1 md:p-6">
