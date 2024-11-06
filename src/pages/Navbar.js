@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { FaShoppingCart, FaUser, FaBars, FaTimes } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import { IoCartOutline } from "react-icons/io5";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+    // Toggle dark color when scrolled beyond 200px
+    useEffect(() => {
+      const handleScroll = () => {
+        if (window.scrollY > 200) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -13,7 +26,8 @@ const Navbar = () => {
     isActive ? 'text-gray-300' : 'hover:text-gray-300';
 
   return (
-    <nav className=" text-1E1E1E px-10 md:px-40 py-3 shadow-lg fixed w-full ">
+    <nav className=" text-1E1E1E px-10 md:px-40 py-3 shadow-lg fixed w-full bg-white ">
+      {/* <nav className={`px-10 md:px-40 py-3 fixed w-full transition-colors duration-300 shadow-lg ${isScrolled ? 'bg-gray-800 text-white' : 'bg-white text-[#1E1E1E]'}`}></nav> */}
       <div className="container flex mx-auto  justify-between items-center " >
         
         {/* Logo */}

@@ -43,7 +43,7 @@ const Categoreies = () => {
           Explore More
         </button>
       </div>
-/
+
     {/* Paragraph */}
     
     </div>
