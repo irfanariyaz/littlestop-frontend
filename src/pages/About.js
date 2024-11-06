@@ -22,7 +22,7 @@ function About() {
        }
     ]
   return (
-    <div className=" mt-3 ">
+    <div className=" mt-10 ">
         <div className='flex flex-col items-center '>
             <h1 className=' text-2xl font-bold'>About Us</h1>
             <p className='text-sm'>Order now and appreciate the beauty of nature</p>
