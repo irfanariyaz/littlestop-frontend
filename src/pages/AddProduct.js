@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { DataContext } from './context/DataContext';
 
 const AddProduct = () => {
-
-  const [categories, setCategories] = useState(['Electronics', 'Clothing', 'Accessories']); // Sample categories
+const {categories,setCategories} = useContext(DataContext);
   const [thumbnailIndex, setThumbnailIndex] = useState(0); // Track the selected thumbnail
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -22,16 +22,10 @@ const AddProduct = () => {
 
   const handleAddCategory = () => {
     if (newCategory) {
-        setCategories([...categories, newCategory]);
+           setCategories((prev)=>{
+          return [...prev,{name:newCategory}]
+        });
         setIsAddingCategory(false)
-    //   axios.post('/api/categories', { name: newCategory })
-    //     .then(response => {
-    //       setCategories([...categories, response.data]);
-    //       setSelectedCategory(response.data.name);
-    //       setNewCategory('');
-    //       setIsAddingCategory(false);
-    //     })
-    //     .catch(error => console.error('Error adding category:', error));
     }
   };
   const handleInputChange = (e) => {
@@ -45,16 +39,6 @@ const AddProduct = () => {
       ...prevData,
       images: [...prevData.images, ...files]
     }))
-    // const imageDtos = files.map((file, index) => ({
-    //   fileName: file.name,
-    //   fileType: file.type,
-    //   isThumbnail: index === thumbnailIndex // Set initially to the first image as thumbnail
-    // }));
-    // console.log("imageDtos",imageDtos)
-    // setProductData((prevData)=>{
-    //     return {...prevData,images:[...prevData.images,...imageDtos]}
-    // });
-    // console.log("productData.images",productData.images)
     setSelectedImages(files);
   };
 
@@ -67,14 +51,24 @@ const AddProduct = () => {
 
     // Forming FormData to send images and other data
     const formData = new FormData();
-    formData.append('name', productData.name);
-    formData.append('price', productData.price);
-    formData.append('description', productData.description);
-    formData.append('category', productData.category);
-    //formData.append('images', productData.images);
-    formData.append('thumbnailIndex', thumbnailIndex.toString());
-    formData.append('brand', productData.brand);
-    formData.append('inventory', productData.inventory.toString());
+    // Add the `productRequest` JSON as a single part
+      formData.append('productRequest', new Blob([JSON.stringify({
+        name: productData.name,
+        price: productData.price,
+        description: productData.description,
+        category: productData.category,
+        thumbnailIndex: thumbnailIndex,
+        brand: productData.brand,
+        inventory: productData.inventory
+      })], { type: 'application/json' }));
+    // formData.append('name', productData.name);
+    // formData.append('price', productData.price);
+    // formData.append('description', productData.description);
+    // formData.append('category', productData.category);
+    // //formData.append('images', productData.images);
+    // formData.append('thumbnailIndex', thumbnailIndex.toString());
+    // formData.append('brand', productData.brand);
+    // formData.append('inventory', productData.inventory.toString());
       // Append each image individually
   productData.images.forEach((image, index) => {
     formData.append(`images`, image); // The backend should treat this as a List<MultipartFile>
@@ -163,8 +157,8 @@ const AddProduct = () => {
             required
           >
             <option value="" disabled>Select a category</option>
-            {categories.map((cat, index) => (
-              <option key={index} value={cat}>{cat}</option>
+            {categories?.map((cat,index) => (
+              <option key={index} value={cat.name}>{cat.name}</option>
             ))}
           </select>
           <button

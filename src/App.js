@@ -7,23 +7,24 @@ import ProductDetails from './pages/ProductDetails';
 import Navbar from './pages/Navbar';
 import Footer from './pages/Footer';
 import AddProduct from './pages/AddProduct';
+import { DataProvider } from './pages/context/DataContext';
 
 function App() {
   return (
-    <>
-    <Navbar/>
-    <div className="pt-[104px]">
-      <Routes>    
-        <Route path='/' element={<Home/>}/>
-        <Route path='/products' element={< Products/>}/>
-        <Route path='/productDetail/:id' element={< ProductDetails/>}/>
-        <Route path='/add' element={<AddProduct/>}/>
-      </Routes>
-      <Footer/>
-    </div>
-
-  
-    </>
+    <DataProvider>
+      <>
+      <Navbar/>
+      <div className="pt-[104px]">
+        <Routes>    
+          <Route path='/' element={<Home/>}/>
+          <Route path='/products' element={< Products/>}/>
+          <Route path='/productDetail/:id' element={< ProductDetails/>}/>
+          <Route path='/add' element={<AddProduct/>}/>
+        </Routes>
+        <Footer/>
+      </div> 
+      </>
+    </DataProvider>
    
 
   );

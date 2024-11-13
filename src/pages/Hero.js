@@ -1,7 +1,39 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { DataContext } from './context/DataContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const {setProducts} = useContext(DataContext)
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleClick();
+    }
+  };
+  const handleClick = async() => {  
+      if(searchTerm.length>0){
+        try{
+        const response = await axios.get(`/api/v1/products/search/${searchTerm}`);
+        setProducts(response.data.data)
+        navigate('/products')
+        }catch(err){
+          alert(err.response.data.message)
+        }
+      }
+      else{
+        alert("Please enter a search term")
+      }
+      //navigate to products page
+      
+  };
+
   return (
     <section className="mt-4 ">
       <div class="md:container  p-10 md:p-0 bg-primary  md:w-[70%] md:m-auto flex flex-col md:flex-row items-center">
@@ -34,9 +66,13 @@ const Hero = () => {
                 type="text"
                 placeholder="Search for products..."
                 className="flex-1 outline-none h-[40px] pl-2"
+                value={searchTerm}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}  // Detect "Enter" key
               />
               
-              <FaSearch className="text-gray-400 mr-2 w-[30px] h-[30px] border rounded-lg text-[20px] p-2 bg-primary"  />
+              <FaSearch className="text-gray-400 mr-2 w-[30px] h-[30px] border rounded-lg text-[20px] p-2 bg-primary" 
+              onClick={handleClick} />
           
               
             </div>
