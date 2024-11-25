@@ -6,6 +6,7 @@ function ProductCardForCatagoreies({index,product}) {
     
   <Link
     to={`/productDetail/${product.id}`}
+    state={{ product }}  // Pass product as state
     key={index}
     className=" max-h-[400px] max-w-[250px]  bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 "
   >

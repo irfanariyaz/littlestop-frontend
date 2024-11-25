@@ -6,8 +6,6 @@ import { DataContext } from './context/DataContext';
 export default function Products() {
   const{products,setProducts,loadmoreProducts,isLastPage} = useContext(DataContext);
 
-
-console.log("isLastPage",isLastPage)
   return (
     <div className='container  w-[90%] mt-4  md:w-[80%] m-auto'>
      

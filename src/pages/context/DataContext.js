@@ -20,30 +20,30 @@ export const DataProvider = ({ children})=>{
     const [searchParams] = useSearchParams();
     // Get the category from query parameters
       const category = searchParams.get("category");
-      console.log("category param",searchParams,category)
-    const [searchTerm,setSearchTerm] = useState("");
+    const searchTerm = searchParams.get("searchTerm");
     //fetch initial data
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                if(category){
+                if(category&& !searchTerm ){
                     const response = await axios.get(`/api/v1/products/category/${category}/${pageNo}/${recordCount}`);
                     const {products,last} = response.data.data;
-                    console.log('response from category',response.data.data)
-                    console.log("Page no",pageNo,recordCount)
+                    console.log('called category endpoint')
                     setProducts((prev)=>{
                         return [...prev,...products]
                     });
                     setIsLastPage(last);
                 }
-                // else if(searchTerm){
-                //     const response = await axios.get(`/api/v1/products/search/${searchTerm}/${searchPageNo}/${recordCount}`);
-                //     const {products,last} = response.data.data;
-                //     setProducts((prev)=>{
-                //         return [...prev,...products]
-                //     });
-                //     setIsLastsearchPage(last);
-                // }
+                else if(searchTerm){
+                    const response = await axios.get(`/api/v1/products/search/${searchTerm}/${pageNo}/${recordCount}`);
+                    const {products,last} = response.data.data;
+                    console.log('called search endpoint')
+                    setProducts((prev)=>{
+                        return [...prev,...products]
+                    });
+                    setIsLastsearchPage(last);
+                    
+                }
                 else{
                     const [productsResponse, categoriesResponse,brandResponse] = await Promise.all([
                         axios.get(`/api/v1/products/all/${pageNo}/${recordCount}`), // Replace with your API endpoint
@@ -52,14 +52,12 @@ export const DataProvider = ({ children})=>{
                     
                     ]);
                     const{products:newProducts,last}= productsResponse.data.data;
-                    
+                    console.log('called all products endpoint')
                     setProducts((prev)=>{
                         return [...prev,...newProducts]
                     });
-                    console.log('response from products',products)
                     setIsLastPage(last);
                     setCategories(categoriesResponse.data.data);
-                    console.log("brandResponse",brandResponse)
                     setBrands(brandResponse.data.data);
                 }
                
@@ -71,7 +69,7 @@ export const DataProvider = ({ children})=>{
         
           fetchData();
         
-    },[pageNo,category])
+    },[pageNo,category,searchTerm])
     const loadmoreProducts = ()=>{
         setPageNo(pageNo+1)
     }
@@ -85,7 +83,7 @@ export const DataProvider = ({ children})=>{
         <DataContext.Provider value={{products,setProducts,categories,setCategories,
                                     loadmoreProducts,isLastPage,pageNo,recordCount,
                                     searchPageNo,isLastSearchPage,
-                                    searchTerm,setSearchTerm,handleClick,setIsLastsearchPage
+                                    searchTerm,handleClick,setIsLastsearchPage
                                     ,brands,setBrands}}>
             {children}
         </DataContext.Provider>

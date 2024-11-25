@@ -5,12 +5,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
-  const {setProducts,recordCount,searchTerm,setSearchTerm} = useContext(DataContext)
+  const {setProducts} = useContext(DataContext);
+  const [search,setSearch] = useState('');
 
   const navigate = useNavigate();
 
   const handleChange = (event) => {
-    setSearchTerm(event.target.value);
+    setSearch(event.target.value);
   };
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -18,8 +19,10 @@ const Hero = () => {
     }
   };
   const handleClick = async() => {  
-      if(searchTerm.length>0){       
-        navigate('/search/products')       
+      if(search.length>0){       
+        setProducts([]);
+
+        navigate(`/products?searchTerm=${search}`)     
       }
       else{
         alert("Please enter a search term")
@@ -60,7 +63,7 @@ const Hero = () => {
                 type="text"
                 placeholder="Search for products..."
                 className="flex-1 outline-none h-[40px] pl-2"
-                value={searchTerm}
+                value={search}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}  // Detect "Enter" key
               />

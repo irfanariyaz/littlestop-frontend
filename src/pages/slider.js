@@ -59,7 +59,7 @@ useEffect(()=>{
             <FaArrowLeft className=' '/>
                   </div>
                   
-                  <div className=" hidden md:block md:max-w-[250px] md:self-start md:pt-10 lg:max-w-xl md:bg-white md:p-4  ml-4 ">
+                  <div className=" hidden md:block md:max-w-[250px] md:self-start md:pt-10  md:bg-white md:p-4  ml-4 ">
                     <h1 className="text-xl  md:text-3xl font-bold mb-4">Best Selling Products</h1>
                     <p className="text-gray-500 ml-2 mb-4">
                         Check out our latest best selling products liked by our customers
