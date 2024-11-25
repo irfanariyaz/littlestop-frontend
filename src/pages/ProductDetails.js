@@ -66,9 +66,10 @@ const handleImageHover = (image) => {
 
       {/* Right Column - Product Details */}
       <div className="flex flex-col space-y-4 p-4">
-        <h1 className="text-3xl font-semibold">{product?.name}</h1>
+        <h1 className="text-3xl font-semibold capitalize">{product?.name}</h1>
         <p className="text-3xl font-bold text-black">${product?.price}</p>
-        <p className="text-gray-700">{product?.description}</p>
+        <h4 className="text-gray-700 bg-red-300 inline-block w-fit px-3 py-2 rounded-xl capitalize ">{product?.brand}</h4>
+        <p className="text-gray-700 first-letter:capitalize">{product?.description}</p>
         
         <button className="mt-4 bg-primary text-black px-6 py-2 rounded-md hover:bg-primary-dark transition duration-300">
           Add to Cart

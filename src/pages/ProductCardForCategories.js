@@ -11,7 +11,7 @@ function ProductCardForCatagoreies({index,product}) {
   >
     <div className="w-[200px] h-[250px] bg-gray-100 rounded-lg  mb-4">
       <img
-        src={product.image}
+        src={product.images[0].image}
         alt={product.name}
         className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
       />

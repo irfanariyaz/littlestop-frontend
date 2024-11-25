@@ -15,11 +15,11 @@ function ProductCard({index,product}) {
       <img
         src={product.images[0].image}
         alt={product.name}
-        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 shadow-lg shadow-slate-700"
       />
     </div>
-    <h3 className="text-lg font-semibold">{product.name}</h3>
-    <p className="text-gray-500">${product.price}</p>
+    <h3 className="text-lg font-semibold first-letter:capitalize text-gray-600">{product.name}</h3>
+    <p className="text-gray-800 bg-primary inline-block w-fit px-2 font-bold rounded-lg">${product.price}</p>
   </Link>
 
   )

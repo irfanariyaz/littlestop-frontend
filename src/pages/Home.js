@@ -2,7 +2,7 @@ import React from 'react'
 import Hero from './Hero.js'
 import Slider from './slider.js'
 import About from './About.js'
-import Categoreies from './Categories.js'
+import HomeCategoreies from './HomeCategoreies.js'
 import Testimonials from './Testimonials.js'
 
 function Home() {
@@ -12,7 +12,7 @@ function Home() {
    {/* <BestSellingProducts/> */}
    <Slider />
    <About/>
-   <Categoreies/>
+   <HomeCategoreies/>
    <Testimonials/>
    </>
   )

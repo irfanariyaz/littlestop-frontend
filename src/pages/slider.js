@@ -1,21 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 //import { left_arrow_icon, right_arrow_icon } from 'react-icons'; // Adjust the import path as necessary
 import ProductCard from './ProductCardForCategories';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import ProductCardForCatagoreies from './ProductCardForCategories';
 
+import { DataContext } from './context/DataContext';
+import  axios  from 'axios';
+
 const Slider = () => {
-    const items = [
-        { id: 1, name: 'Product 1', image: 'images/image1.jpg', price: 19.99 },
-        { id: 2, name: 'Product 2', image: 'images/image1.jpg', price: 29.99 },
-        { id: 3, name: 'Product 3', image: 'images/image1.jpg', price: 39.99 },
-        { id: 4, name: 'Product 4', image: 'images/image1.jpg', price: 49.99 },
-        { id: 5, name: 'Product 5', image: 'images/image1.jpg', price: 59.99 },
-        { id: 6, name: 'Product 6', image: 'images/image1.jpg', price: 69.99 },
-        { id: 7, name: 'Product 7', image: 'images/image1.jpg', price: 79.99 },
-        { id: 8, name: 'Product 8', image: 'images/image1.jpg', price: 89.99 },
-        { id: 9, name: 'Product 9', image: 'images/image1.jpg', price: 99.99 }
-      ];
+  const [items,setItems] = useState([]);
+useEffect(()=>{
+  const fetchData =async()=>{
+    const response = await axios.get(`api/v1/products/best-selling`);
+    const products = response.data.data;
+    setItems(products);
+  };
+  fetchData();
+  
+},[])
   const [arrowLeft, setArrowLeft] = useState(false);
   const [arrowRight, setArrowRight] = useState(true);
   const sliderRef = useRef(null);
@@ -72,7 +74,7 @@ const Slider = () => {
             className=" flex overflow-x-scroll no-scrollbar overflow-y-hidden  space-x-5 p-4 "
             onScroll={onSlide}
                   >
-            {items.map((item, index) => (
+            {items?.map((item, index) => (
               <ProductCardForCatagoreies key={index} product={item} />
             ))}
                   </div>

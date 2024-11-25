@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
-  const {setProducts} = useContext(DataContext)
-  const [searchTerm, setSearchTerm] = useState('');
+  const {setProducts,recordCount,searchTerm,setSearchTerm} = useContext(DataContext)
+
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -18,14 +18,8 @@ const Hero = () => {
     }
   };
   const handleClick = async() => {  
-      if(searchTerm.length>0){
-        try{
-        const response = await axios.get(`/api/v1/products/search/${searchTerm}`);
-        setProducts(response.data.data)
-        navigate('/products')
-        }catch(err){
-          alert(err.response.data.message)
-        }
+      if(searchTerm.length>0){       
+        navigate('/search/products')       
       }
       else{
         alert("Please enter a search term")

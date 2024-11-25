@@ -1,53 +1,55 @@
-import React from 'react';
+import React, { useContext } from 'react'
+import { DataContext } from './context/DataContext'
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const Categoreies = () => {
-  const items = [
-    { id: 1, image: 'images/image1.jpg', title: 'Item 1' },
-    { id: 2, image: 'images/image1.jpg', title: 'Item 2' },
-    { id: 3, image: 'images/image1.jpg', title: 'Item 3' },
-  ];
-
+function Categories() {
+    const {categories,setProducts} = useContext(DataContext)
+    const navigate = useNavigate();
+  
+    const handleCategoryClick = (categoryId) => {
+        // Navigate to the category page with the selected category ID
+        setProducts([]);
+        navigate(`/products?category=${categoryId}`)
+        
+      };
   return (
-    <div className='mt-10  bg-primary '>
-      <div className='flex flex-col items-center mb-8 '>
-            <h1 className=' text-2xl font-bold mt-4'>Categories</h1>
-            <p className='text-sm'>Find what you are looking for</p>
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto py-10 w-[90%]">
+        {/* Header */}
+        <header className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-gray-800">Explore Categories</h1>
+          <p className="text-gray-600 mt-2">Browse through our collection of categories.</p>
+        </header>
+
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 flex flex-col justify-between"
+            >
+              {/* Category Title */}
+              {/* <h2 className="text-xl font-semibold text-gray-800 mb-2">{category.name}</h2> */}
+
+              {/* Placeholder Icon */}
+              <div className="flex items-center justify-center h-32  w-32 bg-primary text-amber-900 rounded-full mx-auto mb-4">
+                <span className="text-2xl font-bold text-center first-letter:capitalize  ">{category.name}</span>
+              </div>
+              {/* View More Link */}
+              <a
+               // href={`/categories/${category.id}`}
+                className="text-amber-900font-medium text-sm text-center block mt-auto"
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                View More →
+              </a>
+            </div>
+          ))}
         </div>
-{/* <div className="md:w-[70%] md:m-auto flex  flex-col items-center mb-6  overflow-x-scroll no-scrollbar overflow-y-hidden "> */}
-      {/* Item Display */}
-      
-      {/* <div className="   min-w-[250px] flex justify-center space-x-4 p-4 gap-6">  */}
-      <div className=" flex overflow-x-scroll no-scrollbar overflow-y-hidden space-x-5 p-7  w-full md:w-[70%] md:m-auto justify-around ">
-        {items.map((item, index) => (
-          <div
-            key={item.id}
-            className={`w-[250px] h-[400px] flex  flex-col items-center  rounded-lg flex-shrink-0 ${
-              index === 0 ? '-mt-12' : index === 2 ? '-mt-10' : 'mt-10'
-            }`}
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className=" w-full h-full object-cover rounded-lg shadow-md "
-            />
-            <p className="text-center font-semibold mt-2">{item.title}</p>
-          </div>
-        ))}
-       </div>       
-      <div class="flex flex-col items-center ">
-        <p className=" text-gray-600 mb-4 px-6">
-          Discover our exclusive collection of items carefully crafted for you.
-        </p>
-        {/* Button */}
-        <button className=" bg-white text-black px-6 py-2 rounded-md shadow hover:bg-primary-dark transition duration-300 mb-4">
-          Explore More
-        </button>
       </div>
-
-    {/* Paragraph */}
-    
     </div>
-  );
-};
 
-export default Categoreies;
+  )
+}
+
+export default Categories

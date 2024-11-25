@@ -1,14 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataContext } from './context/DataContext';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const AddProduct = () => {
-const {categories,setCategories} = useContext(DataContext);
+const {categories,setCategories,brands,setBrands} = useContext(DataContext);
+const {id}= useParams();
+const navigate = useNavigate() 
   const [thumbnailIndex, setThumbnailIndex] = useState(0); // Track the selected thumbnail
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [newCategory, setNewCategory] = useState('');
+  const [newBrand, setNewBrand] = useState('');
   const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [isAddingBrand, setIsAddingBrand] = useState(false);
+  const [updateImages,setUpdateImages] = useState(false);
   const [productData, setProductData] = useState({
     name: '',
     price: '',
@@ -16,9 +22,41 @@ const {categories,setCategories} = useContext(DataContext);
     category: '',
     brand:'',
     inventory:'',
+    isBestSelling:false,
     images: [],
     
   });
+  const [isEditing, setIsEditing] = useState(id?true:false);
+  const [isBestSelling, setIsBestSelling] = useState(false);
+
+  const handleRadioChange = (event) => {
+    setIsBestSelling(event.target.value=="true" );
+    setProductData((prevData) => ({
+      ...prevData,
+      isBestSelling: event.target.value=="true"
+    }));
+  };
+  useEffect(()=>{
+      const fetchProduct = async ()=>{
+        const response = await axios.get(`http://localhost:8080/api/v1/products/product/${id}`);
+        const product = response.data.data;
+        console.log("get product by id",product)
+        setProductData({
+          name: product.name,
+          price: product.price,
+          description: product.description,
+          category: product.category,
+          brand:product.brand,
+          inventory:product.inventory,
+          isBestSelling:product.isBestSelling,
+          images: [],
+        });
+        setSelectedImages(product.images);
+      }
+      if(id){
+        fetchProduct();
+      }
+  },[id]);
 
   const handleAddCategory = () => {
     if (newCategory) {
@@ -27,13 +65,24 @@ const {categories,setCategories} = useContext(DataContext);
         });
         setIsAddingCategory(false)
     }
+  };const handleAddBrand = () => {
+    if (newBrand) {
+        setBrands((prev)=>{
+          return [...prev,{name:newBrand}]
+        });
+        setIsAddingBrand(false)
+    }
   };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProductData({ ...productData, [name]: value });
   };
 
   const handleImageUpload = (e) => {
+    if(isEditing){
+      setUpdateImages(true)
+    }
     const files = Array.from(e.target.files);
     setProductData((prevData) => ({
       ...prevData,
@@ -59,34 +108,38 @@ const {categories,setCategories} = useContext(DataContext);
         category: productData.category,
         thumbnailIndex: thumbnailIndex,
         brand: productData.brand,
-        inventory: productData.inventory
+        inventory: productData.inventory,
+        isBestSelling:productData.isBestSelling
+    
       })], { type: 'application/json' }));
-    // formData.append('name', productData.name);
-    // formData.append('price', productData.price);
-    // formData.append('description', productData.description);
-    // formData.append('category', productData.category);
-    // //formData.append('images', productData.images);
-    // formData.append('thumbnailIndex', thumbnailIndex.toString());
-    // formData.append('brand', productData.brand);
-    // formData.append('inventory', productData.inventory.toString());
-      // Append each image individually
+
   productData.images.forEach((image, index) => {
     formData.append(`images`, image); // The backend should treat this as a List<MultipartFile>
   });
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/products/add', formData);
-    console.log('Product added:', response.data);
-    alert(response.data.message);
-    setProductData({
-        name: '',
-        price: '',
-        description: '',
-        category: '',
-        brand:'',
-        inventory:'',
-        images: [],
-      });
-      setSelectedImages([]);
+    const updateUrl = `http://localhost:8080/api/v1/products/update/${id}`;
+    const addUrl = 'http://localhost:8080/api/v1/products/add'; 
+     
+        if(isEditing){
+          const response = await axios.put(updateUrl, formData);
+          alert(response.data.message);
+          navigate('/admin/products')
+        }else{
+          const response = await axios.post(addUrl, formData);
+          alert(response.data.message);
+          setProductData({
+              name: '',
+              price: '',
+              description: '',
+              category: '',
+              brand:'',
+              inventory:'',
+              isBestSelling:false,
+              images: [],
+            });
+        }
+        setSelectedImages([]);
+       
   } catch (error) {
     if (error.response) {
       alert(`Error: ${error.response.data.message || 'Something went wrong!'}`);
@@ -97,20 +150,22 @@ const {categories,setCategories} = useContext(DataContext);
     }
   } 
   };
-
+console.log("isBestSelling",isBestSelling)
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-bold mb-4 text-center">Add a Product</h2>
-    <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-2xl font-bold mb-4 text-center">{isEditing?"Edit a Product":"Add a Product"}</h2>
+    <form onSubmit={handleSubmit} className={!isEditing?"space-y-4":"space-y-1"}>
+      {isEditing && <label  className="text-gray-700">Name</label>}
       <input
         type="text"
         name="name"
         value={productData.name}
         onChange={handleInputChange}
         placeholder="Product Name"
-        className="border p-2 w-full"
+        className="border p-2 w-full "
         required
       />
+      {isEditing && <label  className="text-gray-700">Brand</label>}
       <input
         type="text"
         name="brand"
@@ -120,6 +175,47 @@ const {categories,setCategories} = useContext(DataContext);
         className="border p-2 w-full"
         required
       />
+        {isEditing && <label  className="text-gray-700">Brand</label>}
+     <div className='flex items-center space-x-2'>
+         <select
+            name="brand"
+            value={productData.brand}
+            onChange={handleInputChange}
+            className="border p-2 w-full"
+            required
+          >
+            <option value="" disabled>Select a brand</option>
+            {brands?.map((brand,index) => (
+              <option key={index} value={brand.name}>{brand.name}</option>
+            ))}
+          </select>
+          <button
+              type="button"
+              onClick={() => setIsAddingBrand(!isAddingBrand)}
+              className="p-2 text-blue-500"
+            >
+              +
+            </button>
+     </div>
+     {isAddingBrand && (
+            <div className="flex items-center space-x-2 mt-2">
+              <input
+                type="text"
+                value={newBrand}
+                onChange={(e) => setNewBrand(e.target.value)}
+                placeholder="New Brand"
+                className="flex-grow p-2 border rounded"
+              />
+              <button
+                type="button"
+                onClick={handleAddBrand}
+                className="p-2 bg-blue-500 text-white rounded"
+              >
+                Add
+              </button>
+            </div>
+          )}
+      {isEditing && <label  className="text-gray-700">Price</label>}
       <input
         type="number"
         name="price"
@@ -129,6 +225,7 @@ const {categories,setCategories} = useContext(DataContext);
         className="border p-2 w-full"
         required
       />
+      {isEditing && <label  className="text-gray-700">Inventory</label>}
       <input
         type="number"
         name="inventory"
@@ -138,6 +235,7 @@ const {categories,setCategories} = useContext(DataContext);
         className="border p-2 w-full"
         required
       />
+      {isEditing && <label  className="text-gray-700">Description</label>}
       <textarea
         name="description"
         value={productData.description}
@@ -147,7 +245,7 @@ const {categories,setCategories} = useContext(DataContext);
         required
       />
        
-
+       {isEditing && <label  className="text-gray-700">Category</label>}
      <div className='flex items-center space-x-2'>
          <select
             name="category"
@@ -187,39 +285,69 @@ const {categories,setCategories} = useContext(DataContext);
               </button>
             </div>
           )}
-
-      <label className="block">Upload Images</label>
-      <input
-        type="file"
-        multiple
-        onChange={handleImageUpload}
-        className="border p-2 w-full"
-        accept="image/*"
-      />
-
-      <div className="flex flex-wrap gap-4 mt-4">
-        {selectedImages.map((image, index) => (
-          <div key={index} className={`relative`}>
-            <img
-              src={URL.createObjectURL(image)}
+      
+      <div>
+        <label className="block">{isEditing? "Images" :"Upload Images"}</label>
+        <input
+          type="file"
+          multiple
+          onChange={handleImageUpload}
+          className="border p-2 w-full"
+          accept="image/*"
+        />
+        <div className="flex flex-wrap gap-4 mt-4">
+          {selectedImages.map((image, index) => (
+            <div key={index} className={`relative`}>
+              {isEditing && !updateImages?
+              <img
+              src={image.image}
               alt={image.name}
               className={`w-20 h-20 object-cover  ${thumbnailIndex==index?"border-4 border-blue-400 shadow-blue-50 shadow-lg": ""}` }
               onClick={() => handleThumbnailChange(index)}
             />
-            {/* <input
-              type="radio"
-              name="thumbnail"
-              checked={index === thumbnailIndex}
-              onChange={() => handleThumbnailChange(index)}
-              className="absolute top-0 left-0"
-            /> */}
-            <label className="text-xs">Set as Thumbnail</label>
-          </div>
-        ))}
+                :
+               <img
+                src={URL.createObjectURL(image)}
+                alt={image.name}
+                className={`w-20 h-20 object-cover  ${thumbnailIndex==index?"border-4 border-blue-400 shadow-blue-50 shadow-lg": ""}` }
+                onClick={() => handleThumbnailChange(index)}
+              /> 
+              }           
+          
+        
+              <label className="text-xs">Set as Thumbnail</label>
+            </div>
+          ))}
+        </div>
       </div>
-
+          {/* //create a radio input to chech if it is best selling product */}
+          <label className="block font-semibold mb-2">Is this a best-selling product?</label>
+          <div className="flex items-center gap-4">
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="bestSelling"
+              value="true"
+              checked={isBestSelling === true}
+              onChange={handleRadioChange}
+              className="mr-2"
+            />
+            Yes
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="bestSelling"
+              value="false"
+              checked={isBestSelling === false}
+              onChange={handleRadioChange}
+              className="mr-2"
+            />
+            No
+          </label>
+        </div>
       <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Add Product
+        {isEditing?"Update Product":"Create new Product"}
       </button>
     </form>
     </div>
