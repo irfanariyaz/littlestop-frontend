@@ -164,17 +164,17 @@ console.log("isBestSelling",isBestSelling)
             to="/admin/products"
             className={({ isActive }) =>
               `block px-4 py-2 rounded hover:bg-red-200 ${
-                isActive ? "bg-gray-700" : ""
+                isActive ? "bg-red-200" : ""
               }`
             }
           >
             View All Products
           </NavLink>
           <NavLink
-            to="/admin/add-product"
+            to="/products/add"
             className={({ isActive }) =>
               `block px-4 py-2 rounded hover:bg-red-200 ${
-                isActive ? "bg-gray-700" : ""
+                isActive ? "bg-red-200" : ""
               }`
             }
           >

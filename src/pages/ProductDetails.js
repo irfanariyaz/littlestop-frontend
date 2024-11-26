@@ -72,8 +72,8 @@ const handleImageHover = (image) => {
         <p className="text-gray-700 first-letter:capitalize">{product?.description}</p>
         
         <button className="mt-4 bg-primary text-black px-6 py-2 rounded-md hover:bg-primary-dark transition duration-300">
-          Add to Cart
-        </button>
+         Buy
+        </button >
       </div>
     </div>
   );

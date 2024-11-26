@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataContext } from '../context/DataContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { BiLink } from 'react-icons/bi';
 
 const ProductTable = () => {
   const {products, setProducts,isLastPage,loadmoreProducts} =useContext(DataContext);
@@ -10,10 +11,28 @@ const ProductTable = () => {
   const handleDelete = (id) => {
     // Logic to delete the product with the given id
     console.log('Delete product', id);
+    const deleteProduct = async () => {
+      const response = await axios.delete(`/api/v1/products/delete/${id}`);
+      console.log(response.data);
+      alert(response.data.message);
+      const updatedProducts = products.filter((product) => product.id !== id);
+      setProducts(updatedProducts);
+    };
+    deleteProduct();
   };
 
   return (
     <div className="container mx-auto p-4">
+    
+    <div className="flex justify-end mt-4">
+      <Link
+        to="/products/add"
+        className="bg-blue-500 text-black px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+      >
+        Add new product
+      </Link>
+  </div>
+      
       <h2 className="text-2xl font-bold mb-4">Product List</h2>
       <table className="min-w-full bg-white border rounded-lg shadow-md">
         <thead>
