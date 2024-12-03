@@ -19,6 +19,7 @@ function AdminSidePanel() {
       </NavLink>
       <NavLink
         to="/admin/add-product"
+        
         className={({ isActive }) =>
           `block px-4 py-2 rounded hover:bg-gray-700 ${
             isActive ? "bg-gray-700" : ""

@@ -11,10 +11,14 @@ import { DataProvider } from './pages/context/DataContext';
 import SearchProducts from './pages/SearchProducts';
 import ProductTable from './pages/admin/adminProducts';
 import Categories from './pages/Categories';
+import Contact from './pages/Contact';
+import Login from './pages/Login';
+import { LoginProvider } from './pages/context/LoginContext';
 
 function App() {
   return (
     <DataProvider>
+      <LoginProvider>
       <>
       <Navbar/>
       <div className="pt-[104px]">
@@ -28,10 +32,13 @@ function App() {
           <Route path="/products/add/:id" element={<AddProduct />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/categories/:categoryId" element={<Products />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/admin/login" element={<Login />} />
         </Routes>
         <Footer/>
       </div> 
       </>
+      </LoginProvider>
     </DataProvider>
    
 

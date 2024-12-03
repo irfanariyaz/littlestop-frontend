@@ -1,4 +1,4 @@
-import React,{Children, createContext, useEffect,useState} from "react";
+import React,{ createContext, useEffect,useState} from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -21,6 +21,10 @@ export const DataProvider = ({ children})=>{
     // Get the category from query parameters
       const category = searchParams.get("category");
     const searchTerm = searchParams.get("searchTerm");
+    console.log("category",category);
+    console.log("searchTerm", searchTerm);
+    console.log("page No",pageNo);
+
     //fetch initial data
     useEffect(()=>{
         const fetchData = async () => {
@@ -37,11 +41,11 @@ export const DataProvider = ({ children})=>{
                 else if(searchTerm){
                     const response = await axios.get(`/api/v1/products/search/${searchTerm}/${pageNo}/${recordCount}`);
                     const {products,last} = response.data.data;
-                    console.log('called search endpoint')
+                    console.log('called search endpoint',response.data)
                     setProducts((prev)=>{
                         return [...prev,...products]
                     });
-                    setIsLastsearchPage(last);
+                    setIsLastPage(last);
                     
                 }
                 else{
@@ -70,6 +74,14 @@ export const DataProvider = ({ children})=>{
           fetchData();
         
     },[pageNo,category,searchTerm])
+
+    // Reset products when category or searchTerm changes
+  useEffect(() => {
+    setProducts([]);
+    setPageNo(0);
+    setIsLastPage(false);
+  }, [category, searchTerm]);
+
     const loadmoreProducts = ()=>{
         setPageNo(pageNo+1)
     }
@@ -84,7 +96,7 @@ export const DataProvider = ({ children})=>{
                                     loadmoreProducts,isLastPage,pageNo,recordCount,
                                     searchPageNo,isLastSearchPage,
                                     searchTerm,handleClick,setIsLastsearchPage
-                                    ,brands,setBrands}}>
+                                    ,brands,setBrands,setPageNo}}>
             {children}
         </DataContext.Provider>
     )

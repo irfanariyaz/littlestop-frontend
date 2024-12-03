@@ -1,11 +1,38 @@
-import React, { useState ,useEffect} from 'react';
-import { FaShoppingCart, FaUser, FaBars, FaTimes } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import React, { useState ,useEffect, useContext} from 'react';
+import { FaShoppingCart, FaUser, FaBars, FaTimes ,FaSearch} from 'react-icons/fa';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { IoCartOutline } from "react-icons/io5";
+import { DataContext } from './context/DataContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const {setProducts,setPageNo,isLastPage} = useContext(DataContext);
+  const [search,setSearch] = useState('');
+ 
+
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+     
+      handleClick();
+    }
+  };
+  const handleClick = async() => {  
+      if(search.length>0){       
+        setProducts([]);
+        setPageNo(0);
+        console.log("go to search")
+        navigate(`/products?searchTerm=${search}`)     
+      }
+      else{
+        alert("Please enter a search term")
+      }
+    }
     // Toggle dark color when scrolled beyond 200px
     useEffect(() => {
       const handleScroll = () => {
@@ -38,11 +65,27 @@ const Navbar = () => {
         {/* Desktop Nav NavLinks */}
         <div className="hidden md:flex space-x-8 text-lg">
           <NavLink to="/" className={linkClasses}>Home</NavLink>
-          <NavLink to="/products" className={linkClasses}> Products</NavLink>
+          <a href="/products" className={linkClasses}> Products</a>
           <NavLink to="/categories" className={linkClasses}>Categories</NavLink> 
           {/* <NavLink to="/brands" className={linkClasses}>Brand</NavLink>  */}
           <NavLink to="/contact" className={linkClasses}>Contact</NavLink>
         </div>
+        {/* create search bar  */}
+        <div className="relative flex items-center bg-white border-transparent rounded-md ">
+        <input
+          type="text"
+          placeholder="  Search for products..."
+          className="flex-1 outline-none h-[40px] pl-3 pr-6 bg-primary text-black rounded-lg"  // Adjust padding to make space for the icon
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}  // Detect "Enter" key
+        />
+        
+        {/* Search Icon positioned inside the input */}
+        <FaSearch 
+          className="absolute right-2  text-gray-400 text-[20px] cursor-pointer" 
+          onClick={handleClick} 
+        />
+      </div>
 
         {/* Icons */}
         <div className="hidden md:flex space-x-4 items-center">

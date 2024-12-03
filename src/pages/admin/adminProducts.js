@@ -3,9 +3,11 @@ import axios from 'axios';
 import { DataContext } from '../context/DataContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiLink } from 'react-icons/bi';
+import { LoginContext } from '../context/LoginContext';
 
 const ProductTable = () => {
-  const {products, setProducts,isLastPage,loadmoreProducts} =useContext(DataContext);
+  const {products, setProducts,isLastPage,loadmoreProducts,} =useContext(DataContext);
+  const{user,setUser}= useContext(LoginContext);
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
@@ -20,16 +22,24 @@ const ProductTable = () => {
     };
     deleteProduct();
   };
-
+  if(!user){
+    navigate('/admin/login')
+  }
   return (
     <div className="container mx-auto p-4">
     
-    <div className="flex justify-end mt-4">
+    <div className="flex justify-end mt-4 ">
       <Link
         to="/products/add"
-        className="bg-blue-500 text-black px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+        className="bg-blue-500 text-black px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 mr-4"
       >
         Add new product
+      </Link>
+      <Link
+        to="/"
+        onClick={()=>setUser('')}
+        className="bg-red-500 text-black px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+      >        Logout
       </Link>
   </div>
       
@@ -50,9 +60,9 @@ const ProductTable = () => {
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm font-light">
-          {products.map((product) => (
+          {products.map((product,index) => (
             <tr key={product.id} className="border-b border-gray-200 hover:bg-gray-100">
-              <td className="py-3 px-6 text-left whitespace-nowrap">{product.id}</td>
+              <td className="py-3 px-6 text-left whitespace-nowrap">{index+1}</td>
               <td className="py-3 px-6 text-left">{product.name}</td>
               <td className="py-3 px-6 text-left">{product.description.length > 9 
                                                 ? `${product.description.substring(0, 9)}...` 

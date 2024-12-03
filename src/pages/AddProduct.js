@@ -28,10 +28,10 @@ const navigate = useNavigate()
     
   });
   const [isEditing, setIsEditing] = useState(id?true:false);
-  const [isBestSelling, setIsBestSelling] = useState(false);
+  // const [isBestSelling, setIsBestSelling] = useState(false);
 
   const handleRadioChange = (event) => {
-    setIsBestSelling(event.target.value=="true" );
+    
     setProductData((prevData) => ({
       ...prevData,
       isBestSelling: event.target.value=="true"
@@ -58,6 +58,24 @@ const navigate = useNavigate()
         fetchProduct();
       }
   },[id]);
+  useEffect(() => {
+    if (!id) {
+      // Reset the form state when there's no product ID (Add mode)
+      setProductData({
+        name: '',
+        price: '',
+        description: '',
+        category: '',
+        brand: '',
+        inventory: '',
+        isBestSelling: false,
+        images: [],
+      });
+      setSelectedImages([]);
+      setIsEditing(false);
+      setThumbnailIndex(0);
+    }
+  }, [id]);
 
   const handleAddCategory = () => {
     if (newCategory) {
@@ -151,7 +169,6 @@ const navigate = useNavigate()
     }
   } 
   };
-console.log("isBestSelling",isBestSelling)
   return (
 
     <div className='flex mx-auto  bg-primary w-[80%] gap-24 '>
@@ -350,7 +367,7 @@ console.log("isBestSelling",isBestSelling)
                 type="radio"
                 name="bestSelling"
                 value="true"
-                checked={isBestSelling === true}
+                checked={productData.isBestSelling === true}
                 onChange={handleRadioChange}
                 className="mr-2"
               />
@@ -361,7 +378,7 @@ console.log("isBestSelling",isBestSelling)
                 type="radio"
                 name="bestSelling"
                 value="false"
-                checked={isBestSelling === false}
+                checked={productData.isBestSelling === false}
                 onChange={handleRadioChange}
                 className="mr-2"
               />

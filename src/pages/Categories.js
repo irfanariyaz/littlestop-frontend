@@ -26,7 +26,8 @@ function Categories() {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 flex flex-col justify-between"
+              className="bg-white rounded-lg shadow-md cursor-pointer p-6 hover:shadow-lg transition duration-300 flex flex-col justify-between"
+              onClick={() => handleCategoryClick(category.id)}
             >
               {/* Category Title */}
               {/* <h2 className="text-xl font-semibold text-gray-800 mb-2">{category.name}</h2> */}
