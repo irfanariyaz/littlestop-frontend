@@ -39,7 +39,7 @@ const navigate = useNavigate()
   };
   useEffect(()=>{
       const fetchProduct = async ()=>{
-        const response = await axios.get(`http://localhost:8080/api/v1/products/product/${id}`);
+        const response = await axios.get(`https://littlestop-frontend.onrender.com/api/v1/products/product/${id}`);
         const product = response.data.data;
         console.log("get product by id",product)
         setProductData({
@@ -136,8 +136,8 @@ const navigate = useNavigate()
     formData.append(`images`, image); // The backend should treat this as a List<MultipartFile>
   });
   try {
-    const updateUrl = `http://localhost:8080/api/v1/products/update/${id}`;
-    const addUrl = 'http://localhost:8080/api/v1/products/add'; 
+    const updateUrl = `https://littlestop-frontend.onrender.com/api/v1/products/update/${id}`;
+    const addUrl = 'https://littlestop-frontend.onrender.com/api/v1/products/add'; 
      
         if(isEditing){
           const response = await axios.put(updateUrl, formData);

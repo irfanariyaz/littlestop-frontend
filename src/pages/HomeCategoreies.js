@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { DataContext } from './context/DataContext';
+import { useNavigate } from 'react-router-dom';
 
 const HomeCategoreies = () => {
   const{setProducts}= useContext(DataContext)
+  const navigate = useNavigate();
   const items = [
     { id: 1, image: 'images/categories/cat-book.png', title: 'Books' },
     { id: 2, image: 'images/categories/cat-mats.png', title: 'Mats' },
@@ -10,7 +12,7 @@ const HomeCategoreies = () => {
   ];
   const exploreCategories = () => {
     setProducts([]);
-    window.location.href = '/categories';
+    navigate('/categories');
   };
 
   return (
