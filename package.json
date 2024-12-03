@@ -16,7 +16,7 @@
  
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp static.json build/static.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -42,8 +42,7 @@
     "react-router-dom": "^6.27.0",
     "tailwindcss": "^3.4.14"
   },
-  
-    "files": [
+      "files": [
       "static.json"
     ]
   
