@@ -24,7 +24,8 @@ function App() {
       <Navbar/>
       <div className="pt-[104px]">
        
-        <Routes>    
+        <Routes> 
+        <Switch>   
           <Route path='/' element={<Home/>}/>
           <Route path='/products' element={< Products/>}/>
           <Route path='/productDetail/:id' element={< ProductDetails/>}/>
@@ -36,6 +37,7 @@ function App() {
           <Route path="/categories/:categoryId" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin/login" element={<Login />} />
+          </Switch>
         </Routes>
         <Footer/>
       </div> 
