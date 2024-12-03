@@ -22,7 +22,7 @@ const ProductTable = () => {
     };
     deleteProduct();
   };
-  if(!user){
+  if(user!=`${process.env.ADMIN_EMAIL}`){
     navigate('/admin/login')
   }
   return (
