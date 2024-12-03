@@ -1,6 +1,6 @@
 
 import './App.css';
-import { Routes,Route,Switch  } from 'react-router-dom';
+import { Routes,Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
@@ -14,6 +14,7 @@ import Categories from './pages/Categories';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import { LoginProvider } from './pages/context/LoginContext';
+import {Switch} from 'react-router-dom';
 
 function App() {
   return (
