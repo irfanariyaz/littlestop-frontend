@@ -14,7 +14,6 @@ import Categories from './pages/Categories';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import { LoginProvider } from './pages/context/LoginContext';
-import {Switch} from 'react-router-dom';
 
 function App() {
   return (
@@ -26,7 +25,7 @@ function App() {
       <div className="pt-[104px]">
        
         <Routes> 
-        <Switch>   
+      
           <Route path='/' element={<Home/>}/>
           <Route path='/products' element={< Products/>}/>
           <Route path='/productDetail/:id' element={< ProductDetails/>}/>
@@ -38,7 +37,7 @@ function App() {
           <Route path="/categories/:categoryId" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin/login" element={<Login />} />
-          </Switch>
+
         </Routes>
         <Footer/>
       </div> 
