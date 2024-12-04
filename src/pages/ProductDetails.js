@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { DataContext } from './context/DataContext';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import  axios  from 'axios';
+import axiosInstance from './admin/axiosInstance';
 
 const ProductDetails = () => {
   const product_id  = useParams();
@@ -17,7 +16,7 @@ const navigate = useNavigate();
     if (product) {
       const fetchImages = async () => {
         try {
-          const response = await axios.get(`/api/v1/images/images/${id}`);
+          const response = await axiosInstance.get(`/api/v1/images/images/${id}`);
           console.log("request sent")
           setProduct((prevProduct) => ({
             ...prevProduct,
@@ -48,7 +47,7 @@ const handleBuy = ()=>{
         {product?.images?.map((image, index) => (
           <img
             key={index}
-            src={image.image}
+            src={`data:image/jpeg;base64,${image.image}`}
             // alt={`Product thumbnail ${index + 1}`}
           alt={`image ${index + 1}` }
             onMouseOver={() => handleImageHover(image)}
@@ -61,7 +60,7 @@ const handleBuy = ()=>{
       {/* Middle Column - Main Image */}
       <div className="flex justify-center items-center">
         <img
-          src={mainImage}
+          src={`data:image/jpeg;base64,${mainImage}`}
           alt="Main product"
           className="w-[400px] h-[500px] object-contain rounded-lg shadow-md transition-transform duration-300"
         />

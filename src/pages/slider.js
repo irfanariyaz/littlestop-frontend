@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-//import { left_arrow_icon, right_arrow_icon } from 'react-icons'; // Adjust the import path as necessary
-import ProductCard from './ProductCardForCategories';
+import React, {  useEffect, useRef, useState } from 'react';
+
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import ProductCardForCatagoreies from './ProductCardForCategories';
 
-import { DataContext } from './context/DataContext';
-import  axios  from 'axios';
+import axiosInstance from './admin/axiosInstance';
 
 const Slider = () => {
   const [items,setItems] = useState([]);
 useEffect(()=>{
   const fetchData =async()=>{
-    const response = await axios.get(`api/v1/products/best-selling`);
+    const response = await axiosInstance.get(`api/v1/products/best-selling`);
     const products = response.data.data;
     setItems(products);
   };

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import ProductCard from './ProductCard';
-import axios from 'axios';
 import { DataContext } from './context/DataContext';
 
 export default function Products() {

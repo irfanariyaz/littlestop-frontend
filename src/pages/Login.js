@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { LoginContext } from './context/LoginContext';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from './admin/axiosInstance';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
     // Implement login logic here
     try{
-    const response = await axios.post('/api/v1/admin/login',{email,password});
+    const response = await axiosInstance.post('/api/v1/admin/login',{email,password});
         setUser(response.data.data);
         navigate('/admin/products');
     }catch(error){

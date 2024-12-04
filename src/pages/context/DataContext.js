@@ -1,7 +1,7 @@
 import React,{ createContext, useEffect,useState} from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
+import axiosInstance from "../admin/axiosInstance";
 //create context
 export const DataContext = createContext();
 
@@ -30,7 +30,7 @@ export const DataProvider = ({ children})=>{
         const fetchData = async () => {
             try {
                 if(category&& !searchTerm ){
-                    const response = await axios.get(`/api/v1/products/category/${category}/${pageNo}/${recordCount}`);
+                    const response = await axiosInstance.get(`/api/v1/products/category/${category}/${pageNo}/${recordCount}`);
                     const {products,last} = response.data.data;
                     console.log('called category endpoint')
                     setProducts((prev)=>{
@@ -39,7 +39,7 @@ export const DataProvider = ({ children})=>{
                     setIsLastPage(last);
                 }
                 else if(searchTerm){
-                    const response = await axios.get(`/api/v1/products/search/${searchTerm}/${pageNo}/${recordCount}`);
+                    const response = await axiosInstance.get(`/api/v1/products/search/${searchTerm}/${pageNo}/${recordCount}`);
                     const {products,last} = response.data.data;
                     console.log('called search endpoint',response.data)
                     setProducts((prev)=>{
@@ -50,13 +50,13 @@ export const DataProvider = ({ children})=>{
                 }
                 else{
                     const [productsResponse, categoriesResponse,brandResponse] = await Promise.all([
-                        axios.get(`/api/v1/products/all/${pageNo}/${recordCount}`), // Replace with your API endpoint
-                        axios.get(`/api/v1/categories/all`), // Replace with your API endpoint
-                        axios.get(`/api/v1/brands/all`) // Replace with your API endpoint
+                        axiosInstance.get(`/api/v1/products/all/${pageNo}/${recordCount}`), // Replace with your API endpoint
+                        axiosInstance.get(`/api/v1/categories/all`), // Replace with your API endpoint
+                        axiosInstance.get(`/api/v1/brands/all`) // Replace with your API endpoint
                     
                     ]);
                     const{products:newProducts,last}= productsResponse.data.data;
-                    console.log('called all products endpoint')
+                    console.log('called all products endpoint',products)
                     setProducts((prev)=>{
                         return [...prev,...newProducts]
                     });

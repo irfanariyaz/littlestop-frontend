@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+
 import { DataContext } from '../context/DataContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiLink } from 'react-icons/bi';
 import { LoginContext } from '../context/LoginContext';
-
+import axiosInstance from './axiosInstance';
 const ProductTable = () => {
   const {products, setProducts,isLastPage,loadmoreProducts,} =useContext(DataContext);
   const{user,setUser}= useContext(LoginContext);
@@ -14,7 +14,7 @@ const ProductTable = () => {
     // Logic to delete the product with the given id
     console.log('Delete product', id);
     const deleteProduct = async () => {
-      const response = await axios.delete(`/api/v1/products/delete/${id}`);
+      const response = await axiosInstance.delete(`/api/v1/products/delete/${id}`);
       console.log(response.data);
       alert(response.data.message);
       const updatedProducts = products.filter((product) => product.id !== id);
@@ -25,6 +25,7 @@ const ProductTable = () => {
   if(user!=`${process.env.ADMIN_EMAIL}`){
     navigate('/admin/login')
   }
+
   return (
     <div className="container mx-auto p-4">
     

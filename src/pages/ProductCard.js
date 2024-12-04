@@ -13,7 +13,7 @@ function ProductCard({index,product}) {
     <div className="md:w-[200px] md:h-[250px] bg-gray-100 rounded-lg  mb-4">
     
       <img
-        src={product.images[0].image}
+        src={`data:image/jpeg;base64,${product.images[0].image}`}
         alt={product.name}
         className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 shadow-lg shadow-slate-700"
       />

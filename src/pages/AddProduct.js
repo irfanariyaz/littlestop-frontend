@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+
 import { DataContext } from './context/DataContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-
+import axiosInstance from './admin/axiosInstance';
 const AddProduct = () => {
 const {categories,setCategories,brands,setBrands} = useContext(DataContext);
 const {id}= useParams();
@@ -39,7 +39,7 @@ const navigate = useNavigate()
   };
   useEffect(()=>{
       const fetchProduct = async ()=>{
-        const response = await axios.get(`https://littlestop-frontend.onrender.com/api/v1/products/product/${id}`);
+        const response = await axiosInstance.get(`api/v1/products/product/${id}`);
         const product = response.data.data;
         console.log("get product by id",product)
         setProductData({
@@ -136,15 +136,16 @@ const navigate = useNavigate()
     formData.append(`images`, image); // The backend should treat this as a List<MultipartFile>
   });
   try {
-    const updateUrl = `https://littlestop-frontend.onrender.com/api/v1/products/update/${id}`;
-    const addUrl = 'https://littlestop-frontend.onrender.com/api/v1/products/add'; 
+    const updateUrl = `api/v1/products/update/${id}`;
+    const addUrl = 'api/v1/products/add'; 
      
         if(isEditing){
-          const response = await axios.put(updateUrl, formData);
+          const response = await axiosInstance.put(updateUrl, formData);
           alert(response.data.message);
           navigate('/admin/products')
         }else{
-          const response = await axios.post(addUrl, formData);
+          console.log("formdata",formData)
+          const response = await axiosInstance.post(addUrl, formData);
           alert(response.data.message);
           setProductData({
               name: '',
@@ -169,6 +170,8 @@ const navigate = useNavigate()
     }
   } 
   };
+
+
   return (
 
     <div className='flex mx-auto  bg-primary w-[80%] gap-24 '>

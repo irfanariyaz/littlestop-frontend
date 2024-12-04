@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import ProductCard from './ProductCard';
-import axios from 'axios';
 import { DataContext } from './context/DataContext';
+import axiosInstance from './admin/axiosInstance';
 
 export default function SearchProducts() {
   const{isLastSearchPage,recordCount,searchTerm,setIsLastsearchPage} = useContext(DataContext);
@@ -13,7 +13,7 @@ export default function SearchProducts() {
 useEffect(() =>{
     const getSearchProducts = async () => {
         try {
-            const response = await axios.get(`/api/v1/products/search/${searchTerm}/${searchPageNo}/${recordCount}`);
+            const response = await axiosInstance.get(`/api/v1/products/search/${searchTerm}/${searchPageNo}/${recordCount}`);
             const { products: newProducts, last } = response.data.data;
             setSearchProducts((prevProducts) => [...prevProducts, ...newProducts]);
             setIsLastsearchPage(last); // Set `isLastPage` based on backend response

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { DataContext } from './context/DataContext';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
