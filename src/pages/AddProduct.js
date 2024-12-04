@@ -342,7 +342,7 @@ const navigate = useNavigate()
               <div key={index} className={`relative`}>
                 {isEditing && !updateImages?
                 <img
-                src={image.image}
+                src={`data:image/jpeg;base64,${image.image}`}
                 alt={image.name}
                 className={`w-20 h-20 object-cover  ${thumbnailIndex==index?"border-4 border-blue-400 shadow-blue-50 shadow-lg": ""}` }
                 onClick={() => handleThumbnailChange(index)}
